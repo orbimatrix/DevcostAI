@@ -6,6 +6,22 @@ export enum AppState {
   ERROR = 'ERROR'
 }
 
+export enum View {
+  LANDING = 'LANDING',
+  LOGIN = 'LOGIN',
+  SIGNUP = 'SIGNUP',
+  ESTIMATOR = 'ESTIMATOR',
+  PROFILE = 'PROFILE',
+  TERMS = 'TERMS',
+  PRIVACY = 'PRIVACY'
+}
+
+export interface User {
+  name: string;
+  email: string;
+  role: 'Founder' | 'Enterprise' | 'Freelancer';
+}
+
 export interface WageData {
   country: string;
   currencySymbol: string;

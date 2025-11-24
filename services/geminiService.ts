@@ -59,6 +59,7 @@ export const getMarketData = async (country: string): Promise<WageData> => {
       config: {
         tools: [{ googleSearch: {} }],
         // responseMimeType: "application/json" is NOT supported with tools (Search)
+        // We rely on the prompt to enforce JSON output structure.
       },
     });
 
