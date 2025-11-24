@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
 import { ChatMessage, EstimationResult } from '../types';
 import { sendFollowUpChat } from '../services/geminiService';
 
@@ -76,12 +77,16 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ result }) => {
         
         {messages.map((msg, idx) => (
           <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div className={`max-w-[85%] rounded-2xl p-3 text-sm leading-relaxed ${
+            <div className={`max-w-[85%] rounded-2xl p-4 text-sm ${
               msg.role === 'user' 
                 ? 'bg-[#312e81] text-white rounded-br-none' 
                 : 'bg-white text-gray-800 border border-gray-100 rounded-bl-none shadow-sm'
             }`}>
-              {msg.text}
+              <div className={`prose prose-sm max-w-none ${msg.role === 'user' ? 'prose-invert' : 'prose-indigo'}`}>
+                <ReactMarkdown>
+                  {msg.text}
+                </ReactMarkdown>
+              </div>
             </div>
           </div>
         ))}
