@@ -1,0 +1,5 @@
+{
+  "name": "DevCost AI: Global Project Estimator",
+  "description": "An AI-powered tool that analyzes technical documentation and mockups to generate localized development cost and timeline estimates using real-time global labor market data.",
+  "requestFramePermissions": []
+}
