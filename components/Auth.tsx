@@ -26,16 +26,16 @@ const Auth: React.FC<AuthProps> = ({ initialView, onLogin, navigate }) => {
 
   return (
     <div className="min-h-[calc(100vh-64px)] flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-lg border border-gray-100">
+      <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-2xl shadow-xl border border-gray-100">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-[#1e1b4b]">
             {isLogin ? 'Sign in to your account' : 'Create your free account'}
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
             Or{' '}
             <button
               onClick={() => setIsLogin(!isLogin)}
-              className="font-medium text-indigo-600 hover:text-indigo-500"
+              className="font-medium text-[#312e81] hover:text-[#1e1b4b] underline"
             >
               {isLogin ? 'start a 14-day free trial' : 'sign in to existing account'}
             </button>
@@ -50,7 +50,7 @@ const Auth: React.FC<AuthProps> = ({ initialView, onLogin, navigate }) => {
                 name="email"
                 type="email"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-lg focus:outline-none focus:ring-[#312e81] focus:border-[#312e81] focus:z-10 sm:text-sm"
                 placeholder="Email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -63,7 +63,7 @@ const Auth: React.FC<AuthProps> = ({ initialView, onLogin, navigate }) => {
                 name="password"
                 type="password"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-lg focus:outline-none focus:ring-[#312e81] focus:border-[#312e81] focus:z-10 sm:text-sm"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -77,7 +77,7 @@ const Auth: React.FC<AuthProps> = ({ initialView, onLogin, navigate }) => {
               <select
                 value={role}
                 onChange={(e) => setRole(e.target.value as any)}
-                className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-[#312e81] focus:border-[#312e81] sm:text-sm rounded-lg"
               >
                 <option value="Founder">Startup Founder</option>
                 <option value="Enterprise">Enterprise Client</option>
@@ -89,7 +89,7 @@ const Auth: React.FC<AuthProps> = ({ initialView, onLogin, navigate }) => {
           <div>
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-lg text-white bg-[#312e81] hover:bg-[#1e1b4b] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#312e81] transition-colors"
             >
               {isLogin ? 'Sign in' : 'Sign up'}
             </button>

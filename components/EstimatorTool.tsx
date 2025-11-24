@@ -52,7 +52,7 @@ const EstimatorTool: React.FC = () => {
       {/* Header specific to tool */}
       <div className="mb-8 flex justify-between items-center">
         <div>
-           <h2 className="text-2xl font-bold text-gray-900">New Estimation</h2>
+           <h2 className="text-2xl font-extrabold text-[#1e1b4b]">New Estimation</h2>
            <p className="text-gray-500">Analyze tech docs to get localized cost & timeline.</p>
         </div>
         {status === AppState.COMPLETE && (
@@ -65,14 +65,14 @@ const EstimatorTool: React.FC = () => {
       {/* INPUT MODE */}
       {(status === AppState.IDLE || status === AppState.ANALYZING_MARKET || status === AppState.ESTIMATING || status === AppState.ERROR) && (
         <div className="max-w-3xl mx-auto space-y-8 animate-fade-in-up">
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 space-y-6">
+          <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 space-y-6">
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Target Development Country</label>
+              <label className="block text-sm font-bold text-gray-700 mb-2">Target Development Country</label>
               <select 
                 value={selectedCountry}
                 onChange={(e) => setSelectedCountry(e.target.value)}
-                className="w-full border border-gray-300 rounded-lg p-3 bg-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                className="w-full border border-gray-300 rounded-lg p-3 bg-white focus:ring-2 focus:ring-[#312e81] focus:border-[#312e81] outline-none"
               >
                 {COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
               </select>
@@ -82,14 +82,14 @@ const EstimatorTool: React.FC = () => {
             <FileUpload files={files} setFiles={setFiles} />
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-bold text-gray-700 mb-2">
                 Additional Requirements / Context
               </label>
               <textarea
                 value={requirements}
                 onChange={(e) => setRequirements(e.target.value)}
                 placeholder="E.g., We need a high-frequency trading platform with strict compliance requirements..."
-                className="w-full border border-gray-300 rounded-lg p-3 h-32 focus:ring-2 focus:ring-indigo-500 outline-none resize-none"
+                className="w-full border border-gray-300 rounded-lg p-3 h-32 focus:ring-2 focus:ring-[#312e81] focus:border-[#312e81] outline-none resize-none"
               ></textarea>
             </div>
 
@@ -102,9 +102,9 @@ const EstimatorTool: React.FC = () => {
             <button
               onClick={handleEstimate}
               disabled={status !== AppState.IDLE && status !== AppState.ERROR}
-              className={`w-full py-4 rounded-lg text-white font-bold text-lg shadow-md transition-all
+              className={`w-full py-4 rounded-xl text-white font-bold text-lg shadow-md transition-all
                 ${status === AppState.IDLE || status === AppState.ERROR
-                  ? 'bg-indigo-600 hover:bg-indigo-700 hover:shadow-lg' 
+                  ? 'bg-gradient-to-r from-[#1e1b4b] to-[#312e81] hover:shadow-xl hover:to-[#4338ca]' 
                   : 'bg-indigo-400 cursor-not-allowed'}`}
             >
               {status === AppState.IDLE || status === AppState.ERROR ? 'Analyze & Estimate' : (

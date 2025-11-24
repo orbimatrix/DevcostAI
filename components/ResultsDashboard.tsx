@@ -6,7 +6,8 @@ interface ResultsDashboardProps {
   result: EstimationResult;
 }
 
-const COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444'];
+// Updated COLORS to match Deep Blue/Indigo Theme
+const COLORS = ['#312e81', '#4f46e5', '#818cf8', '#c7d2fe'];
 
 const ResultsDashboard: React.FC<ResultsDashboardProps> = ({ result }) => {
   const { currencySymbol, currencyCode } = result.wageDataUsed;
@@ -24,33 +25,33 @@ const ResultsDashboard: React.FC<ResultsDashboardProps> = ({ result }) => {
   return (
     <div className="space-y-8 animate-fade-in">
       {/* Header Summary */}
-      <div className="bg-white p-6 rounded-xl shadow-lg border border-indigo-50">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">{result.projectName}</h2>
+      <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+        <h2 className="text-2xl font-extrabold text-[#1e1b4b] mb-2">{result.projectName}</h2>
         <p className="text-gray-600 mb-6">{result.summary}</p>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="p-4 bg-blue-50 rounded-lg border border-blue-100">
-            <p className="text-sm text-blue-600 font-semibold uppercase">Estimated Cost Range</p>
+          <div className="p-4 bg-indigo-50 rounded-xl border border-indigo-100">
+            <p className="text-sm text-indigo-700 font-bold uppercase">Estimated Cost Range</p>
             <div className="mt-2">
-              <p className="text-3xl font-bold text-gray-900">{formatMoney(result.totalCost.avg)}</p>
+              <p className="text-3xl font-extrabold text-gray-900">{formatMoney(result.totalCost.avg)}</p>
               <p className="text-sm text-gray-500 mt-1">
                 {formatMoney(result.totalCost.min)} - {formatMoney(result.totalCost.max)}
               </p>
             </div>
           </div>
 
-          <div className="p-4 bg-purple-50 rounded-lg border border-purple-100">
-             <p className="text-sm text-purple-600 font-semibold uppercase">Estimated Timeline</p>
+          <div className="p-4 bg-purple-50 rounded-xl border border-purple-100">
+             <p className="text-sm text-purple-700 font-bold uppercase">Estimated Timeline</p>
              <div className="mt-2">
-              <p className="text-3xl font-bold text-gray-900">{result.timelineWeeks.min} - {result.timelineWeeks.max}</p>
+              <p className="text-3xl font-extrabold text-gray-900">{result.timelineWeeks.min} - {result.timelineWeeks.max}</p>
               <p className="text-sm text-gray-500 mt-1">Weeks</p>
             </div>
           </div>
 
-           <div className="p-4 bg-emerald-50 rounded-lg border border-emerald-100">
-             <p className="text-sm text-emerald-600 font-semibold uppercase">Location Basis</p>
+           <div className="p-4 bg-blue-50 rounded-xl border border-blue-100">
+             <p className="text-sm text-blue-700 font-bold uppercase">Location Basis</p>
              <div className="mt-2">
-              <p className="text-3xl font-bold text-gray-900">{result.wageDataUsed.country}</p>
+              <p className="text-3xl font-extrabold text-gray-900">{result.wageDataUsed.country}</p>
               <p className="text-sm text-gray-500 mt-1">
                 Based on avg. Sr. Rate: {currencySymbol}{result.wageDataUsed.hourlyRates.senior}/hr
               </p>
@@ -62,8 +63,8 @@ const ResultsDashboard: React.FC<ResultsDashboardProps> = ({ result }) => {
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Cost Breakdown Pie */}
-        <div className="bg-white p-6 rounded-xl shadow-md">
-          <h3 className="text-lg font-bold text-gray-800 mb-4">Cost Allocation by Component</h3>
+        <div className="bg-white p-6 rounded-2xl shadow-md border border-gray-100">
+          <h3 className="text-lg font-bold text-[#1e1b4b] mb-4">Cost Allocation by Component</h3>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -89,8 +90,8 @@ const ResultsDashboard: React.FC<ResultsDashboardProps> = ({ result }) => {
         </div>
 
         {/* Wage Rate Comparison Bar */}
-        <div className="bg-white p-6 rounded-xl shadow-md">
-          <h3 className="text-lg font-bold text-gray-800 mb-4">Hourly Market Rates ({result.wageDataUsed.country})</h3>
+        <div className="bg-white p-6 rounded-2xl shadow-md border border-gray-100">
+          <h3 className="text-lg font-bold text-[#1e1b4b] mb-4">Hourly Market Rates ({result.wageDataUsed.country})</h3>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
@@ -102,11 +103,11 @@ const ResultsDashboard: React.FC<ResultsDashboardProps> = ({ result }) => {
                 ]}
                 margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
               >
-                <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip formatter={(value: number) => `${currencySymbol}${value}`} />
-                <Bar dataKey="rate" fill="#4F46E5" radius={[4, 4, 0, 0]} name="Hourly Rate" />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+                <XAxis dataKey="name" tick={{fill: '#4b5563'}} />
+                <YAxis tick={{fill: '#4b5563'}} />
+                <Tooltip formatter={(value: number) => `${currencySymbol}${value}`} cursor={{fill: '#f3f4f6'}} />
+                <Bar dataKey="rate" fill="#312e81" radius={[4, 4, 0, 0]} name="Hourly Rate" />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -116,22 +117,22 @@ const ResultsDashboard: React.FC<ResultsDashboardProps> = ({ result }) => {
 
       {/* Additional Costs & Assumptions */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="bg-white p-6 rounded-xl shadow-md border-l-4 border-yellow-400">
-           <h3 className="text-lg font-bold text-gray-800 mb-3">OpEx & Infrastructure</h3>
+        <div className="bg-white p-6 rounded-2xl shadow-md border-l-4 border-yellow-400">
+           <h3 className="text-lg font-bold text-[#1e1b4b] mb-3">OpEx & Infrastructure</h3>
            <ul className="space-y-3">
-             <li className="flex justify-between items-center border-b pb-2">
+             <li className="flex justify-between items-center border-b border-gray-100 pb-2">
                <span className="text-gray-600">Infrastructure (Monthly)</span>
-               <span className="font-mono font-bold">{formatMoney(result.infrastructureCostMonthly)}</span>
+               <span className="font-mono font-bold text-gray-900">{formatMoney(result.infrastructureCostMonthly)}</span>
              </li>
-             <li className="flex justify-between items-center border-b pb-2">
+             <li className="flex justify-between items-center border-b border-gray-100 pb-2">
                <span className="text-gray-600">3rd Party Licenses (Est.)</span>
-               <span className="font-mono font-bold">{formatMoney(result.thirdPartyLicensesCost)}</span>
+               <span className="font-mono font-bold text-gray-900">{formatMoney(result.thirdPartyLicensesCost)}</span>
              </li>
            </ul>
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow-md">
-          <h3 className="text-lg font-bold text-gray-800 mb-3">Key Assumptions</h3>
+        <div className="bg-white p-6 rounded-2xl shadow-md border-l-4 border-[#312e81]">
+          <h3 className="text-lg font-bold text-[#1e1b4b] mb-3">Key Assumptions</h3>
           <ul className="list-disc list-inside space-y-2 text-sm text-gray-600">
             {result.assumptions.map((ass, idx) => (
               <li key={idx}>{ass}</li>
