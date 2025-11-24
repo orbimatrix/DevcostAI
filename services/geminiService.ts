@@ -1,7 +1,7 @@
 import { GoogleGenAI, Type, Schema } from "@google/genai";
 import { WageData, EstimationResult } from "../types";
 
-const apiKey = process.env.API_KEY || '';
+const apiKey = process.env.API_KEY || 'AIzaSyD0u6jqLqsVOrSdMQYeJv0LdazQnnRQj2I';
 const ai = new GoogleGenAI({ apiKey });
 
 // Helper to extract JSON from model response
@@ -25,32 +25,33 @@ const cleanJson = (text: string) => {
  * Step 1: Get Market Data using Gemini 2.5 Flash + Google Search
  */
 export const getMarketData = async (country: string): Promise<WageData> => {
+  const currentYear = new Date().getFullYear();
   const prompt = `
-    Find the current 2024/2025 software developer hourly rates in ${country}.
-    I need the average hourly rate in local currency for:
-    1. Junior Developer
-    2. Mid-level Developer
-    3. Senior Developer
-    4. DevOps Engineer
-    
-    Also identify the local Currency Symbol and Currency Code (ISO 4217).
-    
-    IMPORTANT: Provide the output strictly as a valid JSON object. Do not include markdown formatting or conversational text outside the JSON.
-    
-    Return the data in this JSON structure:
-    {
-      "country": "${country}",
-      "currencySymbol": "string",
-      "currencyCode": "string",
-      "hourlyRates": {
-        "junior": number,
-        "mid": number,
-        "senior": number,
-        "devops": number
-      },
-      "sourceSummary": "A short sentence about where this data came from (e.g. 'Based on 2024 salary surveys from Glassdoor and Payscale in Germany')."
-    }
-  `;
+      Find the most recent software developer hourly rates in ${country} for ${currentYear} or late ${currentYear - 1}.
+      I need the average hourly rate in local currency for:
+      1. Junior Developer
+      2. Mid-level Developer
+      3. Senior Developer
+      4. DevOps Engineer
+      
+      Also identify the local Currency Symbol and Currency Code (ISO 4217).
+      
+      IMPORTANT: Provide the output strictly as a valid JSON object. Do not include markdown formatting or conversational text outside the JSON.
+      
+      Return the data in this JSON structure:
+      {
+        "country": "${country}",
+        "currencySymbol": "string",
+        "currencyCode": "string",
+        "hourlyRates": {
+          "junior": number,
+          "mid": number,
+          "senior": number,
+          "devops": number
+        },
+        "sourceSummary": "A short sentence about where this data came from (e.g. 'Based on ${currentYear} salary surveys from Glassdoor and Payscale in Germany')."
+      }
+    `;
 
   try {
     const response = await ai.models.generateContent({
@@ -65,7 +66,7 @@ export const getMarketData = async (country: string): Promise<WageData> => {
 
     const text = response.text || "{}";
     const data = JSON.parse(cleanJson(text)) as WageData;
-    
+
     // Fallback defaults if search fails or returns nulls
     if (!data.hourlyRates) {
       throw new Error("Failed to structure wage data");
@@ -88,11 +89,11 @@ export const getMarketData = async (country: string): Promise<WageData> => {
  * Step 2: Analyze Project and Estimate using Gemini 3 Pro + Thinking Mode
  */
 export const generateProjectEstimate = async (
-  files: { base64: string; mimeType: string }[], 
+  files: { base64: string; mimeType: string }[],
   requirements: string,
   wageData: WageData
 ): Promise<EstimationResult> => {
-  
+
   const fileParts = files.map(f => ({
     inlineData: {
       data: f.base64,
@@ -210,10 +211,10 @@ export const generateProjectEstimate = async (
 
   const text = response.text || "{}";
   const result = JSON.parse(cleanJson(text)) as EstimationResult;
-  
+
   // Re-attach the wage data source to the result for display
   result.wageDataUsed = wageData;
-  
+
   return result;
 };
 
@@ -221,7 +222,7 @@ export const generateProjectEstimate = async (
  * Chat with context
  */
 export const sendFollowUpChat = async (history: any[], newMessage: string, projectContext: EstimationResult) => {
-    const contextPrompt = `
+  const contextPrompt = `
       You are discussing a project estimate.
       Project: ${projectContext.projectName}
       Cost Range: ${projectContext.wageDataUsed.currencySymbol}${projectContext.totalCost.min} - ${projectContext.totalCost.max}
@@ -231,15 +232,16 @@ export const sendFollowUpChat = async (history: any[], newMessage: string, proje
       User Question: ${newMessage}
     `;
 
-    // Use Gemini 3 Pro for chat as requested
-    const chat = ai.chats.create({
-        model: "gemini-3-pro-preview",
-        history: history,
-        config: {
-          systemInstruction: "You are a helpful AI consultant explaining software development costs."
-        }
-    });
+  // Use Gemini 3 Pro for chat as requested, with Search enabled for real-time data
+  const chat = ai.chats.create({
+    model: "gemini-3-pro-preview",
+    history: history,
+    config: {
+      tools: [{ googleSearch: {} }],
+      systemInstruction: "You are a helpful AI consultant explaining software development costs. You have access to Google Search to provide real-time data and verify current market rates."
+    }
+  });
 
-    const result = await chat.sendMessage({ message: contextPrompt });
-    return result.text;
+  const result = await chat.sendMessage({ message: contextPrompt });
+  return result.text;
 };

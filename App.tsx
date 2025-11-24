@@ -6,6 +6,7 @@ import EstimatorTool from './components/EstimatorTool';
 import Auth from './components/Auth';
 import Profile from './components/Profile';
 import Legal from './components/Legal';
+import Pricing from './components/Pricing';
 
 function App() {
   const [currentView, setCurrentView] = useState<View>(View.LANDING);
@@ -42,6 +43,8 @@ function App() {
         return <Legal view={View.TERMS} />;
       case View.PRIVACY:
         return <Legal view={View.PRIVACY} />;
+      case View.PRICING:
+        return <Pricing navigate={navigate} />;
       default:
         return <LandingPage navigate={navigate} user={user} />;
     }
@@ -49,11 +52,11 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans flex flex-col">
-      <Navbar 
-        currentView={currentView} 
-        user={user} 
-        navigate={navigate} 
-        onLogout={handleLogout} 
+      <Navbar
+        currentView={currentView}
+        user={user}
+        navigate={navigate}
+        onLogout={handleLogout}
       />
       <main className="flex-grow">
         {renderView()}

@@ -13,7 +13,8 @@ export enum View {
   ESTIMATOR = 'ESTIMATOR',
   PROFILE = 'PROFILE',
   TERMS = 'TERMS',
-  PRIVACY = 'PRIVACY'
+  PRIVACY = 'PRIVACY',
+  PRICING = 'PRICING'
 }
 
 export interface User {
