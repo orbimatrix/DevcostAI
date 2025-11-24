@@ -29,7 +29,7 @@ function App() {
   const renderView = () => {
     switch (currentView) {
       case View.LANDING:
-        return <LandingPage navigate={navigate} />;
+        return <LandingPage navigate={navigate} user={user} />;
       case View.ESTIMATOR:
         return <div className="max-w-7xl mx-auto px-4 py-8"><EstimatorTool /></div>;
       case View.LOGIN:
@@ -43,7 +43,7 @@ function App() {
       case View.PRIVACY:
         return <Legal view={View.PRIVACY} />;
       default:
-        return <LandingPage navigate={navigate} />;
+        return <LandingPage navigate={navigate} user={user} />;
     }
   };
 

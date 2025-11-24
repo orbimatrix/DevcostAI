@@ -1,30 +1,56 @@
 import React from 'react';
-import { View } from '../types';
+import { View, User } from '../types';
 
 interface LandingPageProps {
   navigate: (view: View) => void;
+  user: User | null;
 }
 
-const LandingPage: React.FC<LandingPageProps> = ({ navigate }) => {
+const LandingPage: React.FC<LandingPageProps> = ({ navigate, user }) => {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
       <section className="bg-indigo-700 text-white py-20 px-4">
         <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
-            Stop Guessing. <br/><span className="text-indigo-200">Start Building.</span>
-          </h1>
-          <p className="text-xl md:text-2xl text-indigo-100 max-w-3xl mx-auto mb-10">
-            Get AI-powered software development cost and timeline estimates based on real-time global labor market data.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <button onClick={() => navigate(View.SIGNUP)} className="bg-white text-indigo-700 px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 shadow-lg transition-transform hover:-translate-y-1">
-              Start Free Estimate
-            </button>
-            <button onClick={() => navigate(View.ESTIMATOR)} className="bg-indigo-600 border border-indigo-400 text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-indigo-500 transition-colors">
-              Try Live Demo
-            </button>
-          </div>
+          {user ? (
+            <div className="animate-fade-in">
+              <span className="inline-block py-1 px-3 rounded-full bg-indigo-600 border border-indigo-400 text-indigo-100 text-sm font-semibold mb-4">
+                Welcome back, {user.name}
+              </span>
+              <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
+                Ready for your next <br/><span className="text-indigo-200">big project?</span>
+              </h1>
+              <p className="text-xl text-indigo-100 max-w-3xl mx-auto mb-10">
+                Continue where you left off or start a new estimation using the latest market data.
+              </p>
+              <div className="flex flex-col sm:flex-row justify-center gap-4">
+                <button onClick={() => navigate(View.ESTIMATOR)} className="bg-white text-indigo-700 px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 shadow-lg transition-transform hover:-translate-y-1 flex items-center justify-center">
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg>
+                  New Estimate
+                </button>
+                <button onClick={() => navigate(View.PROFILE)} className="bg-indigo-800 border border-indigo-600 text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-indigo-600 transition-colors">
+                  View Dashboard
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div>
+              <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
+                Stop Guessing. <br/><span className="text-indigo-200">Start Building.</span>
+              </h1>
+              <p className="text-xl md:text-2xl text-indigo-100 max-w-3xl mx-auto mb-10">
+                Get AI-powered software development cost and timeline estimates based on real-time global labor market data.
+              </p>
+              <div className="flex flex-col sm:flex-row justify-center gap-4">
+                <button onClick={() => navigate(View.SIGNUP)} className="bg-white text-indigo-700 px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 shadow-lg transition-transform hover:-translate-y-1">
+                  Start Free Estimate
+                </button>
+                <button onClick={() => navigate(View.ESTIMATOR)} className="bg-indigo-600 border border-indigo-400 text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-indigo-500 transition-colors">
+                  Try Live Demo
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
@@ -106,13 +132,46 @@ const LandingPage: React.FC<LandingPageProps> = ({ navigate }) => {
           </div>
         </div>
       </section>
+
+      {/* Trust & Legal Section */}
+      <section className="bg-gray-50 py-16 border-t border-gray-200">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-indigo-50 mb-6">
+            <svg className="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+            </svg>
+          </div>
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">Enterprise-Grade Security & Terms</h2>
+          <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
+            Your intellectual property is safe with us. We process your documents ephemerally to generate estimates and never store your technical specifications without permission. Our terms are designed to protect Founders and Enterprises alike.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <button onClick={() => navigate(View.TERMS)} className="flex items-center justify-center px-6 py-3 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors shadow-sm">
+              <svg className="w-5 h-5 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+              Read Terms of Service
+            </button>
+             <button onClick={() => navigate(View.PRIVACY)} className="flex items-center justify-center px-6 py-3 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors shadow-sm">
+              <svg className="w-5 h-5 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+              Privacy Policy
+            </button>
+          </div>
+        </div>
+      </section>
       
       {/* Footer CTA */}
       <section className="bg-indigo-900 text-white py-16 text-center">
-        <h2 className="text-3xl font-bold mb-6">Ready to plan your next big project?</h2>
-        <button onClick={() => navigate(View.SIGNUP)} className="bg-indigo-500 text-white px-8 py-3 rounded-lg font-bold hover:bg-indigo-400 transition-colors">
-          Create Free Account
-        </button>
+        <h2 className="text-3xl font-bold mb-6">
+          {user ? 'Ready to plan your next project?' : 'Ready to stop guessing?'}
+        </h2>
+        {user ? (
+          <button onClick={() => navigate(View.ESTIMATOR)} className="bg-indigo-500 text-white px-8 py-3 rounded-lg font-bold hover:bg-indigo-400 transition-colors">
+            Start New Estimate
+          </button>
+        ) : (
+          <button onClick={() => navigate(View.SIGNUP)} className="bg-indigo-500 text-white px-8 py-3 rounded-lg font-bold hover:bg-indigo-400 transition-colors">
+            Create Free Account
+          </button>
+        )}
       </section>
 
       {/* Footer */}
