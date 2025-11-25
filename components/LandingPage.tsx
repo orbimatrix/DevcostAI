@@ -213,7 +213,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ navigate, user }) => {
                <h3 className="text-xl font-bold text-gray-900 mb-4">Basic</h3>
                <div className="text-4xl font-extrabold text-gray-900 mb-2">$9<span className="text-lg text-gray-500 font-normal">/mo</span></div>
                <p className="text-sm text-gray-500 mb-8">per month</p>
-               <button className="w-full py-3 px-6 rounded-lg border border-gray-300 text-gray-700 font-medium group-hover:bg-indigo-50 transition-colors">
+               <button 
+                 onClick={() => navigate(View.PRICING)}
+                 className="w-full py-3 px-6 rounded-lg border border-gray-300 text-gray-700 font-medium group-hover:bg-indigo-50 transition-colors"
+               >
                  Buy now
                </button>
              </div>
@@ -223,7 +226,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ navigate, user }) => {
                <h3 className="text-xl font-bold text-gray-900 mb-4">Pro</h3>
                <div className="text-4xl font-extrabold text-gray-900 mb-2">$19<span className="text-lg text-gray-500 font-normal">/mo</span></div>
                <p className="text-sm text-gray-500 mb-8">per month</p>
-               <button className="w-full py-3 px-6 rounded-lg bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition-colors shadow-lg">
+               <button 
+                 onClick={() => navigate(View.PRICING)}
+                 className="w-full py-3 px-6 rounded-lg bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition-colors shadow-lg"
+               >
                  Try it now
                </button>
              </div>
@@ -233,7 +239,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ navigate, user }) => {
                <h3 className="text-xl font-bold text-gray-900 mb-4">Premium</h3>
                <div className="text-4xl font-extrabold text-gray-900 mb-2">$100<span className="text-lg text-gray-500 font-normal">/mo</span></div>
                <p className="text-sm text-gray-500 mb-8">per month</p>
-               <button className="w-full py-3 px-6 rounded-lg bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition-colors">
+               <button 
+                 onClick={() => navigate(View.PRICING)}
+                 className="w-full py-3 px-6 rounded-lg bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition-colors"
+               >
                  Sign up now
                </button>
              </div>
