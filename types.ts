@@ -33,9 +33,17 @@ export interface BlogPost {
   imageUrl: string;
 }
 
+export enum SubscriptionTier {
+  BASIC = 'BASIC',
+  PRO = 'PRO',
+  PREMIUM = 'PREMIUM'
+}
+
 export interface User {
-  name: string;
   email: string;
+  name: string;
+  subscriptionTier: SubscriptionTier;
+  usageCount: number;
   role: 'Founder' | 'Enterprise' | 'Freelancer';
 }
 

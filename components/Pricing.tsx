@@ -1,11 +1,21 @@
 import React from 'react';
-import { View } from '../types';
+import { View, User, SubscriptionTier } from '../types';
 
 interface PricingProps {
     navigate: (view: View) => void;
+    user?: User | null;
+    onUpgrade?: (tier: SubscriptionTier) => void;
 }
 
-const Pricing: React.FC<PricingProps> = ({ navigate }) => {
+const Pricing: React.FC<PricingProps> = ({ navigate, user, onUpgrade }) => {
+    const handleAction = (tier: SubscriptionTier) => {
+        if (user && onUpgrade) {
+            onUpgrade(tier);
+        } else {
+            navigate(View.SIGNUP);
+        }
+    };
+
     return (
         <div className="bg-gray-50 min-h-screen py-20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -34,7 +44,7 @@ const Pricing: React.FC<PricingProps> = ({ navigate }) => {
                                     <svg className="h-6 w-6 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                     </svg>
-                                    <span className="text-gray-600">5 Estimations per month</span>
+                                    <span className="text-gray-600">3 Estimations (Free Tier)</span>
                                 </li>
                                 <li className="flex items-start">
                                     <svg className="h-6 w-6 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -52,10 +62,10 @@ const Pricing: React.FC<PricingProps> = ({ navigate }) => {
                         </div>
                         <div className="p-8 bg-gray-50 border-t border-gray-100 mt-auto">
                             <button
-                                onClick={() => navigate(View.SIGNUP)}
+                                onClick={() => handleAction(SubscriptionTier.BASIC)}
                                 className="w-full py-3 px-6 rounded-xl border border-indigo-600 text-indigo-600 font-bold hover:bg-indigo-50 transition-colors"
                             >
-                                Get Started
+                                {user ? (user.subscriptionTier === SubscriptionTier.BASIC ? 'Current Plan' : 'Downgrade') : 'Get Started'}
                             </button>
                         </div>
                     </div>
@@ -77,7 +87,7 @@ const Pricing: React.FC<PricingProps> = ({ navigate }) => {
                                     <svg className="h-6 w-6 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                     </svg>
-                                    <span className="text-gray-600">Unlimited Estimations</span>
+                                    <span className="text-gray-600">50 Estimations per month</span>
                                 </li>
                                 <li className="flex items-start">
                                     <svg className="h-6 w-6 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -101,10 +111,10 @@ const Pricing: React.FC<PricingProps> = ({ navigate }) => {
                         </div>
                         <div className="p-8 bg-gray-50 border-t border-gray-100 mt-auto">
                             <button
-                                onClick={() => navigate(View.SIGNUP)}
+                                onClick={() => handleAction(SubscriptionTier.PRO)}
                                 className="w-full py-3 px-6 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-700 shadow-lg hover:shadow-xl transition-all"
                             >
-                                Start Free Trial
+                                {user ? (user.subscriptionTier === SubscriptionTier.PRO ? 'Current Plan' : 'Upgrade to Pro') : 'Start Free Trial'}
                             </button>
                         </div>
                     </div>
@@ -123,7 +133,7 @@ const Pricing: React.FC<PricingProps> = ({ navigate }) => {
                                     <svg className="h-6 w-6 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                     </svg>
-                                    <span className="text-gray-600">Everything in Pro</span>
+                                    <span className="text-gray-600">Unlimited Estimations</span>
                                 </li>
                                 <li className="flex items-start">
                                     <svg className="h-6 w-6 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -147,10 +157,10 @@ const Pricing: React.FC<PricingProps> = ({ navigate }) => {
                         </div>
                         <div className="p-8 bg-gray-50 border-t border-gray-100 mt-auto">
                             <button
-                                onClick={() => navigate(View.SIGNUP)}
+                                onClick={() => handleAction(SubscriptionTier.PREMIUM)}
                                 className="w-full py-3 px-6 rounded-xl border border-indigo-600 text-indigo-600 font-bold hover:bg-indigo-50 transition-colors"
                             >
-                                Contact Sales
+                                {user ? (user.subscriptionTier === SubscriptionTier.PREMIUM ? 'Current Plan' : 'Upgrade to Enterprise') : 'Contact Sales'}
                             </button>
                         </div>
                     </div>

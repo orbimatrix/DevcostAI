@@ -1,10 +1,16 @@
 import React from 'react';
-import { User, View } from '../types';
+import { User, View, SubscriptionTier } from '../types';
 
 interface ProfileProps {
   user: User;
   navigate: (view: View) => void;
 }
+
+const TIER_LIMITS = {
+  [SubscriptionTier.BASIC]: 3,
+  [SubscriptionTier.PRO]: 50,
+  [SubscriptionTier.PREMIUM]: Infinity
+};
 
 const Profile: React.FC<ProfileProps> = ({ user, navigate }) => {
   // Mock data for saved estimates
@@ -14,9 +20,13 @@ const Profile: React.FC<ProfileProps> = ({ user, navigate }) => {
     { id: 3, name: "FinTech Trading Bot", date: "2024-05-15", cost: "$120k - $150k", country: "United Kingdom", status: 'Complete' },
   ];
 
+  const limit = TIER_LIMITS[user.subscriptionTier];
+  const usage = user.usageCount || 0;
+  const remaining = limit === Infinity ? 'Unlimited' : Math.max(0, limit - usage);
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      
+
       {/* Header */}
       <div className="md:flex md:items-center md:justify-between mb-8">
         <div className="flex-1 min-w-0">
@@ -53,13 +63,14 @@ const Profile: React.FC<ProfileProps> = ({ user, navigate }) => {
             </div>
           </div>
           <div className="bg-gray-50 px-5 py-3">
-            <div className="text-sm">
-              <span className="font-medium text-[#312e81]">Plan: {user.role}</span>
+            <div className="text-sm flex justify-between">
+              <span className="font-medium text-[#312e81]">Plan: {user.subscriptionTier}</span>
+              <button onClick={() => navigate(View.PRICING)} className="text-indigo-600 hover:text-indigo-800 text-xs font-bold uppercase">Upgrade</button>
             </div>
           </div>
         </div>
 
-        {/* Total Estimates Card */}
+        {/* Usage Card */}
         <div className="bg-white overflow-hidden shadow-lg rounded-xl border border-gray-100">
           <div className="p-5">
             <div className="flex items-center">
@@ -68,27 +79,27 @@ const Profile: React.FC<ProfileProps> = ({ user, navigate }) => {
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">Total Estimates</dt>
+                  <dt className="text-sm font-medium text-gray-500 truncate">Usage</dt>
                   <dd>
-                    <div className="text-lg font-bold text-gray-900">{savedEstimates.length}</div>
+                    <div className="text-lg font-bold text-gray-900">{usage} / {limit === Infinity ? '∞' : limit}</div>
                   </dd>
                 </dl>
               </div>
             </div>
           </div>
           <div className="bg-gray-50 px-5 py-3">
-             <div className="text-sm text-gray-500">
-               Last activity: Today
-             </div>
+            <div className="text-sm text-gray-500">
+              Remaining: {remaining}
+            </div>
           </div>
         </div>
 
         {/* Avg Cost Card */}
-         <div className="bg-white overflow-hidden shadow-lg rounded-xl border border-gray-100">
+        <div className="bg-white overflow-hidden shadow-lg rounded-xl border border-gray-100">
           <div className="p-5">
             <div className="flex items-center">
               <div className="flex-shrink-0 bg-amber-500 rounded-lg p-3">
-                 <svg className="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <svg className="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
@@ -101,36 +112,36 @@ const Profile: React.FC<ProfileProps> = ({ user, navigate }) => {
             </div>
           </div>
           <div className="bg-gray-50 px-5 py-3">
-             <div className="text-sm text-gray-500">
-               Across all saved projects
-             </div>
+            <div className="text-sm text-gray-500">
+              Across all saved projects
+            </div>
           </div>
         </div>
       </div>
 
       <div className="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-100">
         <div className="px-6 py-5 border-b border-gray-200 flex justify-between items-center bg-gray-50">
-           <h3 className="text-lg leading-6 font-bold text-[#1e1b4b]">Recent Estimates</h3>
-           <div className="relative">
-             <input type="text" placeholder="Search projects..." className="border border-gray-300 rounded-lg pl-3 pr-8 py-2 text-sm focus:ring-[#312e81] focus:border-[#312e81] outline-none" />
-           </div>
+          <h3 className="text-lg leading-6 font-bold text-[#1e1b4b]">Recent Estimates</h3>
+          <div className="relative">
+            <input type="text" placeholder="Search projects..." className="border border-gray-300 rounded-lg pl-3 pr-8 py-2 text-sm focus:ring-[#312e81] focus:border-[#312e81] outline-none" />
+          </div>
         </div>
         <ul className="divide-y divide-gray-200">
           {savedEstimates.map((est) => (
             <li key={est.id} className="px-6 py-4 hover:bg-gray-50 transition-colors cursor-pointer group">
               <div className="flex items-center justify-between">
                 <div className="flex flex-col">
-                   <p className="text-md font-bold text-[#312e81] group-hover:text-[#1e1b4b] transition-colors">{est.name}</p>
-                   <p className="flex items-center text-sm text-gray-500 mt-1">
-                     <span className="truncate mr-3 flex items-center">
-                        <svg className="w-4 h-4 mr-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                        {est.country}
-                     </span>
-                     <span className="flex items-center">
-                        <svg className="w-4 h-4 mr-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                        {est.date}
-                     </span>
-                   </p>
+                  <p className="text-md font-bold text-[#312e81] group-hover:text-[#1e1b4b] transition-colors">{est.name}</p>
+                  <p className="flex items-center text-sm text-gray-500 mt-1">
+                    <span className="truncate mr-3 flex items-center">
+                      <svg className="w-4 h-4 mr-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                      {est.country}
+                    </span>
+                    <span className="flex items-center">
+                      <svg className="w-4 h-4 mr-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                      {est.date}
+                    </span>
+                  </p>
                 </div>
                 <div className="flex flex-col items-end">
                   <p className="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 mb-1">
@@ -145,9 +156,9 @@ const Profile: React.FC<ProfileProps> = ({ user, navigate }) => {
           ))}
         </ul>
         <div className="bg-gray-50 px-4 py-4 sm:px-6">
-           <div className="text-sm text-center">
-             <button className="font-bold text-[#312e81] hover:text-[#1e1b4b]">View all projects</button>
-           </div>
+          <div className="text-sm text-center">
+            <button className="font-bold text-[#312e81] hover:text-[#1e1b4b]">View all projects</button>
+          </div>
         </div>
       </div>
     </div>

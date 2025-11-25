@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, User } from '../types';
+import { View, User, SubscriptionTier } from '../types';
 
 interface AuthProps {
   initialView: View.LOGIN | View.SIGNUP;
@@ -19,7 +19,9 @@ const Auth: React.FC<AuthProps> = ({ initialView, onLogin, navigate }) => {
     const mockUser: User = {
       name: email.split('@')[0] || 'User',
       email: email,
-      role: role
+      role: role,
+      subscriptionTier: SubscriptionTier.BASIC,
+      usageCount: 0
     };
     onLogin(mockUser);
   };
@@ -95,9 +97,9 @@ const Auth: React.FC<AuthProps> = ({ initialView, onLogin, navigate }) => {
             </button>
           </div>
         </form>
-        
+
         <div className="text-center mt-4">
-             <p className="text-xs text-gray-400">By continuing, you agree to our Terms of Service and Privacy Policy.</p>
+          <p className="text-xs text-gray-400">By continuing, you agree to our Terms of Service and Privacy Policy.</p>
         </div>
       </div>
     </div>

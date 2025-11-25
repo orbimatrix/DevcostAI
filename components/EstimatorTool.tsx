@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AppState, UploadedFile, EstimationResult } from '../types';
+import { AppState, UploadedFile, EstimationResult, User, SubscriptionTier } from '../types';
 import FileUpload from './FileUpload';
 import ResultsDashboard from './ResultsDashboard';
 import ChatInterface from './ChatInterface';
@@ -10,7 +10,19 @@ const COUNTRIES = [
   "India", "Poland", "Brazil", "Ukraine", "Vietnam", "Estonia", "Mexico"
 ];
 
-const EstimatorTool: React.FC = () => {
+const TIER_LIMITS = {
+  [SubscriptionTier.BASIC]: 3,
+  [SubscriptionTier.PRO]: 50,
+  [SubscriptionTier.PREMIUM]: Infinity
+};
+
+interface EstimatorToolProps {
+  user: User | null;
+  onUsageIncrement: () => void;
+  onUpgradeClick: () => void;
+}
+
+const EstimatorTool: React.FC<EstimatorToolProps> = ({ user, onUsageIncrement, onUpgradeClick }) => {
   const [status, setStatus] = useState<AppState>(AppState.IDLE);
   const [files, setFiles] = useState<UploadedFile[]>([]);
   const [requirements, setRequirements] = useState('');
@@ -24,6 +36,16 @@ const EstimatorTool: React.FC = () => {
       return;
     }
 
+    if (user) {
+      const limit = TIER_LIMITS[user.subscriptionTier];
+      if (user.usageCount >= limit) {
+        if (confirm(`You have reached the limit of ${limit} estimates for your ${user.subscriptionTier} plan. Upgrade to continue?`)) {
+          onUpgradeClick();
+        }
+        return;
+      }
+    }
+
     setStatus(AppState.ANALYZING_MARKET);
     setErrorMsg(null);
 
@@ -33,6 +55,9 @@ const EstimatorTool: React.FC = () => {
       const estimate = await generateProjectEstimate(files, requirements, marketData);
       setResult(estimate);
       setStatus(AppState.COMPLETE);
+      if (user) {
+        onUsageIncrement();
+      }
     } catch (e: any) {
       console.error(e);
       setErrorMsg(e.message || "An unexpected error occurred during estimation.");
@@ -67,6 +92,61 @@ const EstimatorTool: React.FC = () => {
         <div className="max-w-3xl mx-auto space-y-8 animate-fade-in-up">
           <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 space-y-6">
             
+            {/* User Profile & Usage Section */}
+            {user && (
+              <div className="bg-indigo-50 rounded-xl p-6 mb-6 border border-indigo-100">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div>
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="h-10 w-10 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold text-lg">
+                        {user.name.charAt(0).toUpperCase()}
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-gray-900">{user.name}</h3>
+                        <p className="text-sm text-gray-500">{user.email}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 mt-2">
+                      <span className="px-2 py-1 bg-white rounded text-xs font-semibold text-indigo-700 border border-indigo-200">
+                        {user.role}
+                      </span>
+                      <span className="px-2 py-1 bg-white rounded text-xs font-semibold text-indigo-700 border border-indigo-200">
+                        {user.subscriptionTier} Plan
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col items-end min-w-[200px]">
+                    <div className="text-sm font-medium text-gray-600 mb-1">
+                      Monthly Credits
+                    </div>
+                    <div className="w-full bg-indigo-200 rounded-full h-2.5 mb-2">
+                      <div 
+                        className="bg-indigo-600 h-2.5 rounded-full transition-all duration-500" 
+                        style={{ width: `${Math.min(100, ((user.usageCount || 0) / TIER_LIMITS[user.subscriptionTier]) * 100)}%` }}
+                      ></div>
+                    </div>
+                    <div className="flex justify-between w-full text-xs">
+                      <span className="font-bold text-gray-900">
+                        {user.usageCount || 0} used
+                      </span>
+                      <span className="text-gray-500">
+                        {TIER_LIMITS[user.subscriptionTier] === Infinity ? 'Unlimited' : `${TIER_LIMITS[user.subscriptionTier]} total`}
+                      </span>
+                    </div>
+                    {user.subscriptionTier !== SubscriptionTier.PREMIUM && (
+                      <button 
+                        onClick={onUpgradeClick}
+                        className="mt-3 text-xs font-bold text-indigo-600 hover:text-indigo-800 hover:underline"
+                      >
+                        Upgrade for more credits →
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
             <div>
               <label className="block text-sm font-bold text-gray-700 mb-2">Target Development Country</label>
               <select 
