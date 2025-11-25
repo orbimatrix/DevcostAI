@@ -30,8 +30,8 @@ const Contact: React.FC<ContactProps> = ({ navigate }) => {
     };
 
     return (
-        <div className="bg-gray-50 min-h-screen py-16 px-4 sm:px-6 lg:px-8 font-sans">
-            <div className="max-w-7xl mx-auto">
+        <div className="bg-gray-50 min-h-screen font-sans flex flex-col">
+            <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 flex-grow w-full">
                 <div className="text-center mb-16">
                     <h2 className="text-base font-semibold text-indigo-600 tracking-wide uppercase">Contact Us</h2>
                     <p className="mt-2 text-4xl font-extrabold text-gray-900 sm:text-5xl">
