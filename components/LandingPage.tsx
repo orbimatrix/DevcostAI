@@ -148,53 +148,62 @@ const LandingPage: React.FC<LandingPageProps> = ({ navigate, user }) => {
             <p className="text-gray-500 mt-2">We streamlined our mainline complex software costs.</p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-              <div className="text-indigo-600 text-4xl font-serif mb-4">“</div>
-              <p className="text-gray-600 mb-6 italic">
-                I really enjoy the software and ever will do a doublecheck on the cost estimations. It's fantastic.
-              </p>
-              <div className="flex items-center">
-                <div className="w-10 h-10 bg-gray-300 rounded-full mr-3 overflow-hidden">
-                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Mark" alt="avatar" />
+          <div className="relative overflow-hidden">
+            <div className="flex animate-marquee space-x-8 w-max">
+              {[
+                {
+                  quote: "I really enjoy the software and ever will do a doublecheck on the cost estimations. It's fantastic.",
+                  name: "Mark Hanson",
+                  role: "Satisfied Client",
+                  avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Mark"
+                },
+                {
+                  quote: "This gives you the true cost from the source, and labor is excellent. The investment pays off.",
+                  name: "Jane Alikie",
+                  role: "Manager",
+                  avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jane"
+                },
+                {
+                  quote: "I verify trusting status, estimates come in fast. The ability to verify pricing is key.",
+                  name: "Tom Faith",
+                  role: "Satisfied Client",
+                  avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Tom"
+                },
+                {
+                  quote: "I really enjoy the software and ever will do a doublecheck on the cost estimations. It's fantastic.",
+                  name: "Mark Hanson",
+                  role: "Satisfied Client",
+                  avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Mark"
+                },
+                {
+                  quote: "This gives you the true cost from the source, and labor is excellent. The investment pays off.",
+                  name: "Jane Alikie",
+                  role: "Manager",
+                  avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jane"
+                },
+                {
+                  quote: "I verify trusting status, estimates come in fast. The ability to verify pricing is key.",
+                  name: "Tom Faith",
+                  role: "Satisfied Client",
+                  avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Tom"
+                }
+              ].map((testimonial, index) => (
+                <div key={index} className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 w-[400px] flex-shrink-0">
+                  <div className="text-indigo-600 text-4xl font-serif mb-4">“</div>
+                  <p className="text-gray-600 mb-6 italic">
+                    {testimonial.quote}
+                  </p>
+                  <div className="flex items-center">
+                    <div className="w-10 h-10 bg-gray-300 rounded-full mr-3 overflow-hidden">
+                        <img src={testimonial.avatar} alt="avatar" />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-gray-900 text-sm">{testimonial.name}</h4>
+                      <p className="text-gray-500 text-xs">{testimonial.role}</p>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 text-sm">Mark Hanson</h4>
-                  <p className="text-gray-500 text-xs">Satisfied Client</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-               <div className="text-indigo-600 text-4xl font-serif mb-4">“</div>
-              <p className="text-gray-600 mb-6 italic">
-                This gives you the true cost from the source, and labor is excellent. The investment pays off.
-              </p>
-               <div className="flex items-center">
-                <div className="w-10 h-10 bg-gray-300 rounded-full mr-3 overflow-hidden">
-                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jane" alt="avatar" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 text-sm">Jane Alikie</h4>
-                  <p className="text-gray-500 text-xs">Manager</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-               <div className="text-indigo-600 text-4xl font-serif mb-4">“</div>
-              <p className="text-gray-600 mb-6 italic">
-                I verify trusting status, estimates come in fast. The ability to verify pricing is key.
-              </p>
-               <div className="flex items-center">
-                <div className="w-10 h-10 bg-gray-300 rounded-full mr-3 overflow-hidden">
-                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Tom" alt="avatar" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 text-sm">Tom Faith</h4>
-                  <p className="text-gray-500 text-xs">Satisfied Client</p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
