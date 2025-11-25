@@ -22,7 +22,9 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, user, navigate, onLogout }
           
           <div className="hidden md:flex items-center space-x-8">
             <button onClick={() => navigate(View.LANDING)} className={`text-sm font-medium ${currentView === View.LANDING ? 'text-[#312e81]' : 'text-gray-500 hover:text-gray-900'}`}>Home</button>
-            <button onClick={() => navigate(View.ESTIMATOR)} className={`text-sm font-medium ${currentView === View.ESTIMATOR ? 'text-[#312e81]' : 'text-gray-500 hover:text-gray-900'}`}>Estimator</button>
+            {user && (
+              <button onClick={() => navigate(View.ESTIMATOR)} className={`text-sm font-medium ${currentView === View.ESTIMATOR ? 'text-[#312e81]' : 'text-gray-500 hover:text-gray-900'}`}>Estimator</button>
+            )}
             <button onClick={() => navigate(View.PRICING)} className={`text-sm font-medium ${currentView === View.PRICING ? 'text-[#312e81]' : 'text-gray-500 hover:text-gray-900'}`}>Pricing</button>
             
             {user ? (
