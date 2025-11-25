@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, User } from './types';
+import BlogPost from './components/BlogPost';
+import { View, User, BlogPost as BlogPostType } from './types';
 import Navbar from './components/Navbar';
 import LandingPage from './components/LandingPage';
 import EstimatorTool from './components/EstimatorTool';
@@ -7,10 +8,14 @@ import Auth from './components/Auth';
 import Profile from './components/Profile';
 import Legal from './components/Legal';
 import Pricing from './components/Pricing';
+import About from './components/About';
+import Contact from './components/Contact';
+import Blog from './components/Blog';
 
 function App() {
   const [currentView, setCurrentView] = useState<View>(View.LANDING);
   const [user, setUser] = useState<User | null>(null);
+  const [selectedPost, setSelectedPost] = useState<BlogPostType | null>(null);
 
   const navigate = (view: View) => {
     window.scrollTo(0, 0);
@@ -25,6 +30,11 @@ function App() {
   const handleLogout = () => {
     setUser(null);
     navigate(View.LANDING);
+  };
+
+  const handlePostClick = (post: BlogPostType) => {
+    setSelectedPost(post);
+    navigate(View.BLOG_POST);
   };
 
   const renderView = () => {
@@ -45,6 +55,14 @@ function App() {
         return <Legal view={View.PRIVACY} />;
       case View.PRICING:
         return <Pricing navigate={navigate} />;
+      case View.ABOUT:
+        return <About navigate={navigate} />;
+      case View.CONTACT:
+        return <Contact navigate={navigate} />;
+      case View.BLOG:
+        return <Blog navigate={navigate} onPostClick={handlePostClick} />;
+      case View.BLOG_POST:
+        return <BlogPost post={selectedPost} navigate={navigate} />;
       default:
         return <LandingPage navigate={navigate} user={user} />;
     }
